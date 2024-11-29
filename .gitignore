@@ -1,0 +1,46 @@
+# kdiff3 ignore
+*.orig
+# maven ignore
+target/
+# eclipse ignore
+.settings/
+.project
+.classpath
+# idea ignore
+.idea/
+*.ipr
+*.pyc
+*.iml
+*.iws
+# temp ignore
+/data/sop/*.txt
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+/db
+/chat_robot/migrations
+/__pycache__
+/image
+/data
+/logs
+# system ignore
+.DS_Store
+Thumbs.db
+# package ignore (optional)
+# *.jar
+# *.war
+# *.zip
+# *.tar
+# *.tar.gz
+
+_trial_temp
+ChangeLog
+build
+.eggs
+mmc_chat_robot.egg-info
+AUTHORS
+.venv
+.vscode
+venv
