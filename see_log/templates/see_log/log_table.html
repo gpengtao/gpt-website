@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>错误日志: {{ app_name }}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+<h1>错误日志: {{ app_name }}</h1>
+<table style="table-layout: fixed;">
+    <thead>
+    <tr>
+        <th style="width: 162px;">时间</th>
+        <th>内容</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in data %}
+        <tr>
+            <td style="width: 140px;">{{ item.id }}</td>
+            <td style="word-wrap: break-word;white-space: pre-wrap;">{{ item.name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from marathon.views import hello_world
+from see_log.views import query_log
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('see_log/<str:app_name>/', query_log, name='see_log'),
+    path('marathon/', hello_world, name='marathon'),
 ]
