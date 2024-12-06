@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "gpt-website"
+version = "0.1.0"
+description = "gpengtao's website by python"
+authors = ["pengtao.geng <pengtao.geng>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
