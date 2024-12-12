@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'marathon',
-    'see_log'
+    'see_log',
+    'learn',
 ]
 
 MIDDLEWARE = [
