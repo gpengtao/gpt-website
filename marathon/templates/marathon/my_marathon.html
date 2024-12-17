@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>我的马拉松赛事记录</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .marathon-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .marathon-table th {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .marathon-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .marathon-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .marathon-table tr:last-child td {
+            border-bottom: none;
+        }
+        .completed {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .not-started {
+            color: #95a5a6;
+            font-style: italic;
+        }
+        .pb {
+            background: linear-gradient(45deg, #f1c40f, #f39c12);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃‍♂️ 我的马拉松赛事记录 🏃‍♀️</h1>
+        <table class="marathon-table">
+            <thead>
+                <tr>
+                    <th>年份</th>
+                    <th>赛事时间</th>
+                    <th>赛事名称</th>
+                    <th>赛事项目</th>
+                    <th>赛事结果</th>
+                    <th>赛事净成绩</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for race in races %}
+                <tr>
+                    <td>{{ race.year }}</td>
+                    <td>{{ race.date }}</td>
+                    <td>{{ race.name }}</td>
+                    <td>{{ race.event }}</td>
+                    <td class="{% if race.result == '完赛' %}completed{% else %}not-started{% endif %}">
+                        {{ race.result }}
+                    </td>
+                    <td>{{ race.net_time }}</td>
+                    <td>
+                        {{ race.notes }}
+                        {% if 'PB' in race.notes %}
+                        <span class="pb">PB</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 
