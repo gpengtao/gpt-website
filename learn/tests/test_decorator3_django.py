@@ -1,7 +1,11 @@
 from django.utils.decorators import method_decorator
 
+"""
+测试Django提供的装饰器
+"""
 
-# 装饰器函数
+
+# my装饰器函数
 def my_decorator(func):
     def wrapper(*args, **kwargs):
         print("装饰器执行前")
@@ -21,4 +25,4 @@ def my_function(arg):
 
 
 # 调用函数
-my_function("xxxxxxxxxxxxxx")
+my_function("hello")
