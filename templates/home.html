@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>个人工具集</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .card-links {
+            display: flex;
+            gap: 10px;
+        }
+        .card-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .card-link:hover {
+            background: #2980b9;
+        }
+        .card-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ 个人工具集</h1>
+        
+        <div class="card-container">
+            <!-- 错误日志监控卡片 -->
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h2>错误日志监控</h2>
+                <p>查看和统计应用错误日志，帮助快速定位问题。</p>
+                <div class="card-links">
+                    <a href="{% url 'recent_log_stat' %}" class="card-link">错误统计</a>
+                </div>
+            </div>
+
+            <!-- 马拉松记录卡片 -->
+            <div class="card">
+                <div class="card-icon">🏃</div>
+                <h2>马拉松记录</h2>
+                <p>记录和展示个人马拉松比赛成绩和参赛历程。</p>
+                <div class="card-links">
+                    <a href="{% url 'my_marathon' %}" class="card-link">我的马拉松</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
