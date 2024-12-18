@@ -18,11 +18,15 @@ from django.urls import path
 
 from marathon.views import hello_world
 from marathon.views import my_marathon
-from see_log.views import query_log
+from see_log.views import query_app_log
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('see_log/<str:app_name>/', query_log, name='see_log'),
+
+    # see_log
+    path('see_log/<str:app_name>/', query_app_log, name='see_log'),
+
+    # marathon
     path('marathon/', hello_world, name='marathon'),
     path('marathon/my', my_marathon, name='my_marathon'),
 ]

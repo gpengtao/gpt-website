@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def query_log(request, app_name):
+def query_app_log(request, app_name):
     # 连接到SQLite数据库
     db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
     conn = sqlite3.connect(db_path)
