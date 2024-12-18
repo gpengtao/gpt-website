@@ -6,82 +6,189 @@
     <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
+
         h1 {
-            color: #2c3e50;
+            color: white;
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+            font-size: 3.5em;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            animation: fadeInDown 1s ease-out;
         }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .card-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 30px;
             padding: 20px;
+            animation: fadeIn 1s ease-out 0.3s both;
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card-wrapper {
+            position: relative;
+            perspective: 1000px;
+        }
+
         .card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             cursor: pointer;
             text-decoration: none;
             display: block;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
+
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
         }
+
         .card h2 {
             color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+            margin: 15px 0;
+            font-size: 1.8em;
+            position: relative;
+            padding-bottom: 15px;
         }
-        .card p {
-            color: #7f8c8d;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        .card-links {
-            display: none;
-        }
-        .card-arrow {
-            color: #3498db;
-            font-size: 1.5em;
+
+        .card h2::after {
+            content: '';
             position: absolute;
-            right: 20px;
-            bottom: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.3s ease;
         }
+
+        .card:hover h2::after {
+            width: 100px;
+        }
+
+        .card p {
+            color: #34495e;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 1.1em;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.2);
+        }
+
+        .card-arrow {
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            font-size: 1.8em;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .card:hover .card-arrow {
             opacity: 1;
+            transform: translateX(0);
         }
-        .card-icon {
-            font-size: 2em;
-            margin-bottom: 15px;
-            color: #3498db;
+
+        /* 添加光晕效果 */
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
-        .card-wrapper {
-            position: relative;
+
+        .card:hover .glow {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .container {
+                padding: 20px 10px;
+            }
+            .card-container {
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🛠️ 个人工具集</h1>
+        <h1>🌈 个人工具集</h1>
         
         <div class="card-container">
             <!-- 错误日志监控卡片 -->
@@ -89,8 +196,9 @@
                 <a href="{% url 'recent_log_stat' %}" class="card">
                     <div class="card-icon">🔍</div>
                     <h2>错误日志监控</h2>
-                    <p>查看和统计应用错误日志，帮助快速定位问题。</p>
+                    <p>查看和统计应用错误日志，帮助快速定位问题。实时监控，快速响应，提高系统稳定性。</p>
                     <div class="card-arrow">→</div>
+                    <div class="glow"></div>
                 </a>
             </div>
 
@@ -99,8 +207,9 @@
                 <a href="{% url 'my_marathon' %}" class="card">
                     <div class="card-icon">🏃</div>
                     <h2>马拉松记录</h2>
-                    <p>记录和展示个人马拉松比赛成绩和参赛历程。</p>
+                    <p>记录和展示个人马拉松比赛成绩和参赛历程。追踪进步，分享喜悦，记录每一个里程碑。</p>
                     <div class="card-arrow">→</div>
+                    <div class="glow"></div>
                 </a>
             </div>
         </div>
