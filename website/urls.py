@@ -18,13 +18,14 @@ from django.urls import path
 
 from marathon.views import hello_world
 from marathon.views import my_marathon
-from see_log.views import query_app_log
+from see_log.views import query_app_log, recent_log_stat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # see_log
     path('see_log/<str:app_name>/', query_app_log, name='see_log'),
+    path('see_log/stat/recent', recent_log_stat, name='recent_log_stat'),
 
     # marathon
     path('marathon/', hello_world, name='marathon'),
