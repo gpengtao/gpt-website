@@ -60,44 +60,89 @@
             border-radius: 3px;
             font-size: 0.8em;
         }
+        .year-section {
+            margin-bottom: 40px;
+        }
+
+        .year-title {
+            color: #2c3e50;
+            font-size: 2em;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .year-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        .year-stats {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🏃‍♂️ 我的马拉松赛事记录 🏃‍♀️</h1>
-        <table class="marathon-table">
-            <thead>
-                <tr>
-                    <th>年份</th>
-                    <th>赛事时间</th>
-                    <th>赛事名称</th>
-                    <th>赛事项目</th>
-                    <th>赛事结果</th>
-                    <th>赛事净成绩</th>
-                    <th>备注</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for race in races %}
-                <tr>
-                    <td>{{ race.year }}</td>
-                    <td>{{ race.date }}</td>
-                    <td>{{ race.name }}</td>
-                    <td>{{ race.event }}</td>
-                    <td class="{% if race.result == '完赛' %}completed{% else %}not-started{% endif %}">
-                        {{ race.result }}
-                    </td>
-                    <td>{{ race.net_time }}</td>
-                    <td>
-                        {{ race.notes }}
-                        {% if 'PB' in race.notes %}
-                        <span class="pb">PB</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+        {% for year, races in year_group.items reversed %}
+        <div class="year-section">
+            <h2 class="year-title">{{ year }}年度赛事</h2>
+            <div class="year-stats">
+                共计 {{ races|length }} 场比赛
+            </div>
+            <div class="table-container">
+                <table class="marathon-table">
+                    <thead>
+                        <tr>
+                            <th>赛事时间</th>
+                            <th>赛事名称</th>
+                            <th>赛事项目</th>
+                            <th>赛事结果</th>
+                            <th>赛事净成绩</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for race in races %}
+                        <tr>
+                            <td>{{ race.date }}</td>
+                            <td>{{ race.name }}</td>
+                            <td>{{ race.event }}</td>
+                            <td class="{% if race.result == '完赛' %}completed{% else %}not-started{% endif %}">
+                                {{ race.result }}
+                            </td>
+                            <td>{{ race.net_time }}</td>
+                            <td>
+                                {{ race.notes }}
+                                {% if 'PB' in race.notes %}
+                                <span class="pb">PB</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </body>
 </html> 
