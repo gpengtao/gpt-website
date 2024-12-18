@@ -132,8 +132,8 @@
                             <td>{{ race.net_time }}</td>
                             <td>
                                 {{ race.notes }}
-                                {% if 'PB' in race.notes %}
-                                <span class="pb">PB</span>
+                                {% if race.pb %}
+                                <span class="pb">{{ race.event }}PB</span>
                                 {% endif %}
                             </td>
                         </tr>
