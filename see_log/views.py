@@ -34,8 +34,8 @@ def query_app_log(request, app_name):
     data = []
     for row in rows:
         data.append({
-            'id': row[0],
-            'name': row[1],
+            'datetime': row[0],
+            'content': row[1],
         })
 
     # 关闭数据库连接
