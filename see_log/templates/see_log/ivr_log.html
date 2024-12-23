@@ -56,6 +56,24 @@
             font-weight: bold;
         }
 
+        .app-name-filter {
+            margin: 20px 0;
+        }
+        .app-name-filter a {
+            margin-right: 10px;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        .app-name-filter a.active {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
         .search-box {
             margin: 20px 0;
         }
@@ -93,7 +111,7 @@
     <div class="time-filter">
         时间范围：
         {% for hour in valid_hours %}
-        <a href="?hours={{ hour }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}" 
+        <a href="?hours={{ hour }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}{% if app_name %}&app_name={{ app_name }}{% endif %}" 
            {% if hour == hours %}class="active"{% endif %}>
             {% if hour == '168' %}
                 近7天
@@ -106,14 +124,28 @@
 
     <div class="alert-type-filter">
         告警类型：
-        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}" 
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if app_name %}&app_name={{ app_name }}{% endif %}" 
            {% if not alert_type %}class="active"{% endif %}>
             全部
         </a>
         {% for type in valid_alert_types %}
-        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}&alert_type={{ type }}" 
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if app_name %}&app_name={{ app_name }}{% endif %}&alert_type={{ type }}" 
            {% if type == alert_type %}class="active"{% endif %}>
             {{ type }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="app-name-filter">
+        应用名称：
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}" 
+           {% if not app_name %}class="active"{% endif %}>
+            全部
+        </a>
+        {% for app in app_name_stats %}
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}&app_name={{ app.name }}" 
+           {% if app.name == app_name %}class="active"{% endif %}>
+            {{ app.name }} ({{ app.count }})
         </a>
         {% endfor %}
     </div>
@@ -124,10 +156,13 @@
             {% if alert_type %}
             <input type="hidden" name="alert_type" value="{{ alert_type }}">
             {% endif %}
+            {% if app_name %}
+            <input type="hidden" name="app_name" value="{{ app_name }}">
+            {% endif %}
             <input type="text" name="keyword" value="{{ keyword }}" placeholder="输入关键字搜索...">
             <button type="submit">搜索</button>
             {% if keyword %}
-                <a href="?hours={{ hours }}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}" class="clear-search">清除搜索</a>
+                <a href="?hours={{ hours }}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}{% if app_name %}&app_name={{ app_name }}{% endif %}" class="clear-search">清除搜索</a>
             {% endif %}
         </form>
     </div>

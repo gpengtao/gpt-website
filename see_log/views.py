@@ -171,6 +171,26 @@ def split_alerts(datetime, content):
     return alerts
 
 
+def calculate_app_name_stats(alerts):
+    """计算应用名称统计信息"""
+    app_name_count = {}
+    
+    # 统计应用名称出现次数
+    for alert in alerts:
+        if alert['app_name']:
+            app_name_count[alert['app_name']] = app_name_count.get(alert['app_name'], 0) + 1
+    
+    # 将应用名称按数量排序
+    app_name_stats = [
+        {'name': name, 'count': count}
+        for name, count in app_name_count.items()
+        if name  # 过滤掉None值
+    ]
+    app_name_stats.sort(key=lambda x: (-x['count'], x['name']))  # 按数量降序，名称升序
+    
+    return app_name_stats
+
+
 def ivr_log(request):
     # 获取时间范围参数，默认为100小时
     hours = request.GET.get('hours', '100')
@@ -178,9 +198,10 @@ def ivr_log(request):
     valid_hours = ['24', '48', '72', '100', '168']  # 24小时、48小时、72小时、100小时、7天
     hours = hours if hours in valid_hours else '100'
 
-    # 获取关键字参数和告警类型参数
+    # 获取搜索参数
     keyword = request.GET.get('keyword', '').strip()
     alert_type = request.GET.get('alert_type', '').strip()
+    app_name = request.GET.get('app_name', '').strip()
 
     # 连接数据库
     conn = sqlite3.connect(DB_PATH)
@@ -208,9 +229,16 @@ def ivr_log(request):
         alerts = split_alerts(row[0], row[1])
         ivr_logs.extend(alerts)
 
+    # 计算应用名称统计信息（在过滤之前计算，这样显示的是所有告警中的应用分布）
+    app_name_stats = calculate_app_name_stats(ivr_logs)
+
     # 如果指定了告警类型，进行过滤
     if alert_type:
         ivr_logs = [log for log in ivr_logs if log['alert_type'] == alert_type]
+
+    # 如果指定了应用名称，进行过滤
+    if app_name:
+        ivr_logs = [log for log in ivr_logs if log['app_name'] == app_name]
 
     valid_alert_types = ['应用报警', 'delta告警', 'job调度']
 
@@ -221,4 +249,6 @@ def ivr_log(request):
         'keyword': keyword,
         'alert_type': alert_type,
         'valid_alert_types': valid_alert_types,
+        'app_name': app_name,
+        'app_name_stats': app_name_stats,
     })
