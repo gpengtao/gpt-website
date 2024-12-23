@@ -17,9 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
-from marathon.views import hello_world
-from marathon.views import my_marathon
-from see_log.views import query_app_log, app_logs, ivr_log
+from marathon.views import hello_world, my_marathon
+from see_log.views import query_app_log, app_logs, ivr_logs, see_log_home
 
 urlpatterns = [
     # 首页
@@ -27,9 +26,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # see_log
+    path('see_log/', see_log_home, name='see_log_home'),
     path('see_log/app', app_logs, name='app_logs'),
     path('see_log/app/<str:app_name>/', query_app_log, name='see_log'),
-    path('see_log/ivr/', ivr_log, name='ivr_log'),
+    path('see_log/ivr/', ivr_logs, name='ivr_logs'),
 
     # marathon
     path('marathon/', hello_world, name='marathon'),

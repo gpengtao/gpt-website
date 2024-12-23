@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>日志查看系统</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #34495e;
+        }
+        .card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .card a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 日志查看系统</h1>
+        
+        <div class="card-container">
+            <div class="card">
+                <h2>应用错误日志</h2>
+                <p>查看各个应用的错误日志统计和详情</p>
+                <a href="{% url 'app_logs' %}">查看日志</a>
+            </div>
+            
+            <div class="card">
+                <h2>电话报警记录</h2>
+                <p>查看系统告警、应用报警和任务调度记录</p>
+                <a href="{% url 'ivr_logs' %}">查看记录</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -191,7 +191,7 @@ def calculate_app_name_stats(alerts):
     return app_name_stats
 
 
-def ivr_log(request):
+def ivr_logs(request):
     # 获取时间范围参数，默认为100小时
     hours = request.GET.get('hours', '100')
     # 确保hours是有效的选项
@@ -242,7 +242,7 @@ def ivr_log(request):
 
     valid_alert_types = ['应用报警', 'delta告警', 'job调度']
 
-    return render(request, 'see_log/ivr_log.html', {
+    return render(request, 'see_log/ivr_logs.html', {
         'ivr_logs': ivr_logs,
         'hours': hours,
         'valid_hours': valid_hours,
@@ -252,3 +252,8 @@ def ivr_log(request):
         'app_name': app_name,
         'app_name_stats': app_name_stats,
     })
+
+
+def see_log_home(request):
+    """see_log首页"""
+    return render(request, 'see_log/home.html')
