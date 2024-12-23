@@ -1,15 +1,16 @@
 import sqlite3
-import os
 
 from django.shortcuts import render
+
+# 数据库路径配置
+DB_PATH = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
 
 
 # Create your views here.
 
 def query_app_log(request, app_name):
     # 连接到SQLite数据库
-    db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # 执行查询，使用参数化查询来防止SQL注入
@@ -55,8 +56,7 @@ def app_logs(request):
     hours = hours if hours in valid_hours else '8'
 
     # 连接到SQLite数据库
-    db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # 执行SQL查询
@@ -94,11 +94,8 @@ def app_logs(request):
 
 
 def ivr_log(request):
-    # 获取数据库路径（需要根据实际情况修改）
-    db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
-
     # 连接数据库
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # 执行查询
