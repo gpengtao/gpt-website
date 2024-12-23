@@ -104,6 +104,50 @@ def get_alert_type(content):
     return '未知类型'
 
 
+def split_alerts(datetime, content):
+    """拆分合并的告警内容"""
+    alerts = []
+    
+    # 定义分隔标记
+    markers = ['【OPS提醒】', '【OPS告警】']
+    
+    # 找到所有分隔位置
+    positions = []
+    for marker in markers:
+        start = 0
+        while True:
+            pos = content.find(marker, start)
+            if pos == -1:
+                break
+            positions.append(pos)
+            start = pos + 1
+    
+    # 如果没有找到分隔符或只有一个，直接返回原内容
+    if len(positions) <= 1:
+        return [{
+            'datetime': datetime,
+            'content': content,
+            'alert_type': get_alert_type(content)
+        }]
+    
+    # 按位置排序
+    positions.sort()
+    
+    # 根据位置拆分内容
+    for i in range(len(positions)):
+        start = positions[i]
+        end = positions[i + 1] if i + 1 < len(positions) else len(content)
+        alert_content = content[start:end].strip()
+        if alert_content:
+            alerts.append({
+                'datetime': datetime,
+                'content': alert_content,
+                'alert_type': get_alert_type(alert_content)
+            })
+    
+    return alerts
+
+
 def ivr_log(request):
     # 获取时间范围参数，默认为100小时
     hours = request.GET.get('hours', '100')
@@ -135,14 +179,11 @@ def ivr_log(request):
     results = cursor.fetchall()
 
     # 将结果转换为字典列表，并计算告警类型
-    ivr_logs = [
-        {
-            'datetime': row[0],
-            'content': row[1],
-            'alert_type': get_alert_type(row[1])
-        }
-        for row in results
-    ]
+    ivr_logs = []
+    for row in results:
+        # 拆分合并的告警
+        alerts = split_alerts(row[0], row[1])
+        ivr_logs.extend(alerts)
 
     # 如果指定了告警类型，进行过滤
     if alert_type:
