@@ -124,6 +124,17 @@ def get_app_name(content, alert_type):
     return None
 
 
+def create_alert(datetime, content):
+    """创建告警对象"""
+    alert_type = get_alert_type(content)
+    return {
+        'datetime': datetime,
+        'content': content,
+        'alert_type': alert_type,
+        'app_name': get_app_name(content, alert_type)
+    }
+
+
 def split_alerts(datetime, content):
     """拆分合并的告警内容"""
     alerts = []
@@ -144,14 +155,7 @@ def split_alerts(datetime, content):
     
     # 如果没有找到分隔符或只有一个，直接返回原内容
     if len(positions) <= 1:
-        alert_content = content
-        alert_type = get_alert_type(alert_content)
-        return [{
-            'datetime': datetime,
-            'content': alert_content,
-            'alert_type': alert_type,
-            'app_name': get_app_name(alert_content, alert_type)
-        }]
+        return [create_alert(datetime, content)]
     
     # 按位置排序
     positions.sort()
@@ -162,13 +166,7 @@ def split_alerts(datetime, content):
         end = positions[i + 1] if i + 1 < len(positions) else len(content)
         alert_content = content[start:end].strip()
         if alert_content:
-            alert_type = get_alert_type(alert_content)
-            alerts.append({
-                'datetime': datetime,
-                'content': alert_content,
-                'alert_type': alert_type,
-                'app_name': get_app_name(alert_content, alert_type)
-            })
+            alerts.append(create_alert(datetime, alert_content))
     
     return alerts
 
