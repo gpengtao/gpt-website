@@ -137,6 +137,7 @@
         <tr>
             <th style="width: 170px;">时间</th>
             <th style="width: 70px;">类型</th>
+            <th style="width: 250px;">应用</th>
             <th>内容</th>
         </tr>
         </thead>
@@ -145,6 +146,7 @@
             <tr>
                 <td style="width: 170px;">{{ item.datetime }}</td>
                 <td style="width: 70px;">{{ item.alert_type }}</td>
+                <td style="width: 250px;">{{ item.app_name|default:'-' }}</td>
                 <td style="word-wrap: break-word;white-space: pre-wrap;">{{ item.content }}</td>
             </tr>
         {% endfor %}

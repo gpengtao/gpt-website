@@ -104,6 +104,26 @@ def get_alert_type(content):
     return '未知类型'
 
 
+def get_app_name(content, alert_type):
+    """根据告警类型和内容提取应用名称"""
+    try:
+        if alert_type == '应用报警':
+            start = content.index('应用:') + len('应用:')
+            end = content.index('指标:', start)
+            return content[start:end].strip()
+        elif alert_type == 'delta告警':
+            start = content.index('描述:') + len('描述:')
+            end = content.index('[target]', start)
+            return content[start:end].strip()
+        elif alert_type == 'job调度':
+            start = content.index('作业：') + len('作业：')
+            end = content.index('类型：', start)
+            return content[start:end].strip()
+    except ValueError:
+        return None
+    return None
+
+
 def split_alerts(datetime, content):
     """拆分合并的告警内容"""
     alerts = []
@@ -124,10 +144,13 @@ def split_alerts(datetime, content):
     
     # 如果没有找到分隔符或只有一个，直接返回原内容
     if len(positions) <= 1:
+        alert_content = content
+        alert_type = get_alert_type(alert_content)
         return [{
             'datetime': datetime,
-            'content': content,
-            'alert_type': get_alert_type(content)
+            'content': alert_content,
+            'alert_type': alert_type,
+            'app_name': get_app_name(alert_content, alert_type)
         }]
     
     # 按位置排序
@@ -139,10 +162,12 @@ def split_alerts(datetime, content):
         end = positions[i + 1] if i + 1 < len(positions) else len(content)
         alert_content = content[start:end].strip()
         if alert_content:
+            alert_type = get_alert_type(alert_content)
             alerts.append({
                 'datetime': datetime,
                 'content': alert_content,
-                'alert_type': get_alert_type(alert_content)
+                'alert_type': alert_type,
+                'app_name': get_app_name(alert_content, alert_type)
             })
     
     return alerts
