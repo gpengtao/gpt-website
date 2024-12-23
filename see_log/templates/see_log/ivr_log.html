@@ -23,21 +23,128 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        .time-filter {
+            margin: 20px 0;
+        }
+        .time-filter a {
+            margin-right: 10px;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .time-filter a.active {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .alert-type-filter {
+            margin: 20px 0;
+        }
+        .alert-type-filter a {
+            margin-right: 10px;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .alert-type-filter a.active {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .search-box {
+            margin: 20px 0;
+        }
+        .search-box input[type="text"] {
+            padding: 5px 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .search-box button {
+            padding: 5px 15px;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .search-box button:hover {
+            background-color: #45a049;
+        }
+        .clear-search {
+            margin-left: 10px;
+            color: #666;
+            text-decoration: none;
+        }
+        .clear-search:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <h1>📞 电话报警记录</h1>
+    
+    <div class="time-filter">
+        时间范围：
+        {% for hour in valid_hours %}
+        <a href="?hours={{ hour }}{% if keyword %}&keyword={{ keyword }}{% endif %}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}" 
+           {% if hour == hours %}class="active"{% endif %}>
+            {% if hour == '168' %}
+                近7天
+            {% else %}
+                近{{ hour }}小时
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="alert-type-filter">
+        告警类型：
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}" 
+           {% if not alert_type %}class="active"{% endif %}>
+            全部
+        </a>
+        {% for type in valid_alert_types %}
+        <a href="?hours={{ hours }}{% if keyword %}&keyword={{ keyword }}{% endif %}&alert_type={{ type }}" 
+           {% if type == alert_type %}class="active"{% endif %}>
+            {{ type }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="search-box">
+        <form method="get" action="">
+            <input type="hidden" name="hours" value="{{ hours }}">
+            {% if alert_type %}
+            <input type="hidden" name="alert_type" value="{{ alert_type }}">
+            {% endif %}
+            <input type="text" name="keyword" value="{{ keyword }}" placeholder="输入关键字搜索...">
+            <button type="submit">搜索</button>
+            {% if keyword %}
+                <a href="?hours={{ hours }}{% if alert_type %}&alert_type={{ alert_type }}{% endif %}" class="clear-search">清除搜索</a>
+            {% endif %}
+        </form>
+    </div>
+
     <table style="table-layout: fixed;">
         <thead>
         <tr>
-            <th style="width: 162px;">时间</th>
+            <th style="width: 170px;">时间</th>
+            <th style="width: 70px;">类型</th>
             <th>内容</th>
         </tr>
         </thead>
         <tbody>
         {% for item in ivr_logs %}
             <tr>
-                <td style="width: 140px;">{{ item.datetime }}</td>
+                <td style="width: 170px;">{{ item.datetime }}</td>
+                <td style="width: 70px;">{{ item.alert_type }}</td>
                 <td style="word-wrap: break-word;white-space: pre-wrap;">{{ item.content }}</td>
             </tr>
         {% endfor %}

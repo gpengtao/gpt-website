@@ -93,7 +93,28 @@ def app_logs(request):
     return render(request, 'see_log/app_logs.html', context)
 
 
+def get_alert_type(content):
+    """根据内容判断告警类型"""
+    if '【OPS提醒】' in content and '描述: [调度系统]' not in content:
+        return '应用报警'
+    elif '【OPS告警】' in content:
+        return 'delta告警'
+    elif '描述: [调度系统]' in content:
+        return 'job调度'
+    return '未知类型'
+
+
 def ivr_log(request):
+    # 获取时间范围参数，默认为100小时
+    hours = request.GET.get('hours', '100')
+    # 确保hours是有效的选项
+    valid_hours = ['24', '48', '72', '100', '168']  # 24小时、48小时、72小时、100小时、7天
+    hours = hours if hours in valid_hours else '100'
+
+    # 获取关键字参数和告警类型参数
+    keyword = request.GET.get('keyword', '').strip()
+    alert_type = request.GET.get('alert_type', '').strip()
+
     # 连接数据库
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -105,23 +126,35 @@ def ivr_log(request):
             Content as content
         FROM IM_Message
         WHERE "From" = 'rbt_delta_notify_ivr'
-          AND time >= strftime('%s', 'now') * 72 - 100 * 60 * 60 * 1000
+          AND time >= strftime('%s', 'now') * 1000 - ? * 60 * 60 * 1000
+          AND (? = '' OR Content LIKE '%' || ? || '%')
         ORDER BY time DESC
-        limit 100
         """
 
-    cursor.execute(query)
+    cursor.execute(query, (hours, keyword, keyword))
     results = cursor.fetchall()
 
-    # 将结果转换为字典列表
+    # 将结果转换为字典列表，并计算告警类型
     ivr_logs = [
         {
             'datetime': row[0],
-            'content': row[1]
+            'content': row[1],
+            'alert_type': get_alert_type(row[1])
         }
         for row in results
     ]
 
+    # 如果指定了告警类型，进行过滤
+    if alert_type:
+        ivr_logs = [log for log in ivr_logs if log['alert_type'] == alert_type]
+
+    valid_alert_types = ['应用报警', 'delta告警', 'job调度']
+
     return render(request, 'see_log/ivr_log.html', {
-        'ivr_logs': ivr_logs
+        'ivr_logs': ivr_logs,
+        'hours': hours,
+        'valid_hours': valid_hours,
+        'keyword': keyword,
+        'alert_type': alert_type,
+        'valid_alert_types': valid_alert_types,
     })
