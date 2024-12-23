@@ -19,15 +19,17 @@ from django.views.generic import TemplateView
 
 from marathon.views import hello_world
 from marathon.views import my_marathon
-from see_log.views import query_app_log, recent_log_stat
+from see_log.views import query_app_log, app_logs, ivr_log
 
 urlpatterns = [
+    # 首页
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),
 
     # see_log
-    path('see_log/<str:app_name>/', query_app_log, name='see_log'),
-    path('see_log/', recent_log_stat, name='recent_log_stat'),
+    path('see_log/app', app_logs, name='app_logs'),
+    path('see_log/app/<str:app_name>/', query_app_log, name='see_log'),
+    path('see_log/ivr/', ivr_log, name='ivr_log'),
 
     # marathon
     path('marathon/', hello_world, name='marathon'),

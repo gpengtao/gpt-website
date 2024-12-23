@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 from django.shortcuts import render
 
@@ -40,19 +41,19 @@ def query_app_log(request, app_name):
     cursor.close()
     conn.close()
 
-    return render(request, 'see_log/log_table.html', {
+    return render(request, 'see_log/app_log_table.html', {
         'data': data,
         'app_name': app_name
     })
 
 
-def recent_log_stat(request):
+def app_logs(request):
     # 获取时间范围参数，默认为8小时
     hours = request.GET.get('hours', '8')
     # 确保hours是有效的选项
     valid_hours = ['1', '2', '8', '12', '24']
     hours = hours if hours in valid_hours else '8'
-    
+
     # 连接到SQLite数据库
     db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
     conn = sqlite3.connect(db_path)
@@ -89,4 +90,41 @@ def recent_log_stat(request):
         'valid_hours': valid_hours,
     }
 
-    return render(request, 'see_log/recent_log_stat.html', context)
+    return render(request, 'see_log/app_logs.html', context)
+
+
+def ivr_log(request):
+    # 获取数据库路径（需要根据实际情况修改）
+    db_path = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengtao.geng.db'
+
+    # 连接数据库
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # 执行查询
+    query = """
+        SELECT
+            strftime('%Y-%m-%d %H:%M:%S', datetime(`time` / 1000, 'unixepoch', '+8 hour')) AS datetime,
+            Content as content
+        FROM IM_Message
+        WHERE "From" = 'rbt_delta_notify_ivr'
+          AND time >= strftime('%s', 'now') * 72 - 100 * 60 * 60 * 1000
+        ORDER BY time DESC
+        limit 100
+        """
+
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    # 将结果转换为字典列表
+    ivr_logs = [
+        {
+            'datetime': row[0],
+            'content': row[1]
+        }
+        for row in results
+    ]
+
+    return render(request, 'see_log/ivr_log.html', {
+        'ivr_logs': ivr_logs
+    })
