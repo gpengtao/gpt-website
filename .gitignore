@@ -44,3 +44,4 @@ AUTHORS
 .venv
 .vscode
 venv
+nohup.out
