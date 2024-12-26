@@ -22,10 +22,38 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        .time-filter {
+            margin: 20px 0;
+        }
+        .time-filter a {
+            margin-right: 10px;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .time-filter a.active {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 <h1>错误日志: {{ app_name }}</h1>
+<div class="time-filter">
+    时间范围：
+    {% for hour in valid_hours %}
+    <a href="?hours={{ hour }}" {% if hour == hours %}class="active"{% endif %}>
+        {% if hour == '168' %}
+            近7天
+        {% else %}
+            近{{ hour }}小时
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
 <table style="table-layout: fixed;">
     <thead>
     <tr>

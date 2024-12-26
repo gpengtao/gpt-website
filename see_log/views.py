@@ -9,6 +9,12 @@ DB_PATH = '/Users/pengtao.geng/Library/Application Support/btalk/databases/pengt
 # Create your views here.
 
 def query_app_log(request, app_name):
+    # 获取时间范围参数，默认为8小时
+    hours = request.GET.get('hours', '8')
+    # 确保hours是有效的选项
+    valid_hours = ['1', '8', '12', '24', '168']  # 1小时、8小时、12小时、24小时、7天
+    hours = hours if hours in valid_hours else '8'
+
     # 连接到SQLite数据库
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -24,9 +30,9 @@ def query_app_log(request, app_name):
           and (Content not like '%from netty client%')
           and (Content not like '%urls to invokers error%')
           and (Content not like '%securityTest-authTest%')
-          AND time >= strftime('%s', 'now') * 1000 - 8 * 60 * 60 * 1000
+          AND time >= strftime('%s', 'now') * 1000 - ? * 60 * 60 * 1000
         order by time desc;
-    """, (app_name,))
+    """, (app_name, hours))
 
     rows = cursor.fetchall()
 
@@ -44,7 +50,9 @@ def query_app_log(request, app_name):
 
     return render(request, 'see_log/app_log_table.html', {
         'data': data,
-        'app_name': app_name
+        'app_name': app_name,
+        'hours': hours,
+        'valid_hours': valid_hours,
     })
 
 
