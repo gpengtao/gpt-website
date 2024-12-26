@@ -27,7 +27,7 @@ urlpatterns = [
 
     # see_log
     path('see_log/', see_log_home, name='see_log_home'),
-    path('see_log/app', app_logs, name='app_logs'),
+    path('see_log/app/', app_logs, name='app_logs'),
     path('see_log/app/<str:app_name>/', query_app_log, name='see_log'),
     path('see_log/ivr/', ivr_logs, name='ivr_logs'),
 
