@@ -44,9 +44,9 @@ def my_marathon(request):
             'date': '2025-01-01',
             'name': '2025石家庄市第50届元旦长跑活动',
             'event': '10公里',
-            'result': '还未开始',
-            'net_time': '-',
-            'notes': '-',
+            'result': '完赛',
+            'net_time': '00:50:15',
+            'notes': '',
         }
     ]
 
