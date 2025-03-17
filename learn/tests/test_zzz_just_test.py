@@ -1,4 +1,4 @@
 import base64
 
-print(str(base64.decodebytes(str("ZGF0YV9zbWFydG9yZGVy").encode('utf-8')), 'utf-8'))
-print(str(base64.decodebytes(str("Y9ZtUkA2dFdFSjM3WA==").encode('utf-8')), 'utf-8'))
+print(str(base64.decodebytes(str("tKxtEguzi2fRIoWmPIuXWt3he2pfWSZEblEENvKu0no=").encode('utf-8')), 'utf-8'))
+print(str(base64.decodebytes(str("uxUMUGr0iA7ekXNcWlzehA==").encode('utf-8')), 'utf-8'))
