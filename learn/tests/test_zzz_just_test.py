@@ -1,4 +1,10 @@
-import base64
+import random
+from datetime import datetime
 
-print(str(base64.decodebytes(str("tKxtEguzi2fRIoWmPIuXWt3he2pfWSZEblEENvKu0no=").encode('utf-8')), 'utf-8'))
-print(str(base64.decodebytes(str("uxUMUGr0iA7ekXNcWlzehA==").encode('utf-8')), 'utf-8'))
+# 文件名，格式：年月日时分秒_微秒_2位随机数
+username = "pengtao.geng"
+username = username.replace(".", "")
+timestamp = datetime.now().strftime("%Y%m%d%H%M%S%f")
+random_suffix = str(random.randint(10, 99))
+filename = f"file_{username}_{timestamp}_{random_suffix}.xlsx"
+print(filename)
