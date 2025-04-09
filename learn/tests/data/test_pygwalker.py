@@ -3,11 +3,13 @@ import pygwalker as pyg
 
 # 读取 Excel 文件
 df = pd.read_excel('/Users/pengtao.geng/Downloads/test_11111.xlsx')
-df.head(10)
 
-walk = pyg.walk(df)
+# 打开指定格式的渲染
+vis_spec = r"""{"config":[{"config":{"defaultAggregated":true,"geoms":["auto"],"coordSystem":"generic","limit":-1,"timezoneDisplayOffset":0},"encodings":{"dimensions":[{"fid":"document_id","name":"document_id","basename":"document_id","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"store_name","name":"store_name","basename":"store_name","semanticType":"nominal","analyticType":"dimension","offset":0},{"fid":"booking_date","name":"booking_date","basename":"booking_date","semanticType":"nominal","analyticType":"dimension","offset":0},{"fid":"origin_sku_code","name":"origin_sku_code","basename":"origin_sku_code","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"sku_code","name":"sku_code","basename":"sku_code","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"sku_type","name":"sku_type","basename":"sku_type","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"sku_name","name":"sku_name","basename":"sku_name","semanticType":"nominal","analyticType":"dimension","offset":0},{"fid":"first_level_category","name":"first_level_category","basename":"first_level_category","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"second_level_category","name":"second_level_category","basename":"second_level_category","semanticType":"quantitative","analyticType":"dimension","offset":0},{"fid":"gw_mea_key_fid","name":"度量名称","analyticType":"dimension","semanticType":"nominal"}],"measures":[{"fid":"suggest_book_qty","name":"suggest_book_qty","basename":"suggest_book_qty","analyticType":"measure","semanticType":"quantitative","aggName":"sum","offset":0},{"fid":"store_book_qty","name":"store_book_qty","basename":"store_book_qty","analyticType":"measure","semanticType":"quantitative","aggName":"sum","offset":0},{"fid":"confirm_book_qty","name":"confirm_book_qty","basename":"confirm_book_qty","analyticType":"measure","semanticType":"quantitative","aggName":"sum","offset":0},{"fid":"final_qty","name":"final_qty","basename":"final_qty","analyticType":"measure","semanticType":"quantitative","aggName":"sum","offset":0},{"fid":"gw_count_fid","name":"行数","analyticType":"measure","semanticType":"quantitative","aggName":"sum","computed":true,"expression":{"op":"one","params":[],"as":"gw_count_fid"}},{"fid":"gw_mea_val_fid","name":"度量值","analyticType":"measure","semanticType":"quantitative","aggName":"sum"}],"rows":[{"fid":"final_qty","name":"final_qty","basename":"final_qty","analyticType":"measure","semanticType":"quantitative","aggName":"sum","offset":0}],"columns":[{"fid":"sku_name","name":"sku_name","basename":"sku_name","semanticType":"nominal","analyticType":"dimension","offset":0}],"color":[],"opacity":[],"size":[],"shape":[],"radius":[],"theta":[],"longitude":[],"latitude":[],"geoId":[],"details":[],"filters":[],"text":[]},"layout":{"showActions":false,"showTableSummary":false,"stack":"stack","interactiveScale":false,"zeroScale":true,"size":{"mode":"auto","width":320,"height":200},"format":{},"geoKey":"name","resolve":{"x":false,"y":false,"color":false,"opacity":false,"shape":false,"size":false}},"visId":"gw_QnX7","name":"Chart 1"}],"chart_map":{},"workflow_list":[{"workflow":[{"type":"view","query":[{"op":"aggregate","groupBy":["sku_name"],"measures":[{"field":"final_qty","agg":"sum","asFieldKey":"final_qty_sum"}]}]}]}],"version":"0.4.9.15"}"""
+pyg.render(dataset=df, spec=vis_spec)
 
-print("1111111111111")
-print(walk)
-print("2222222222222")
+# 打开表格展示
+pyg.table(df)
 
+# 打开绘图工具
+pyg.walk(dataset=df, show_preview=False)
