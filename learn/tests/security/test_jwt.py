@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 # 你的token（去掉Bearer前缀）
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYjNhNDYyMTQtNDYwNS00NjEzLWE3Y2ItZWJhMTc0ODc3MTAyIiwiZXhwIjoxNzU4NjIwNjAyLCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.rdl15T84OhswwGuSU-lbFJuh7HHop-h2ijAdnSO0vU0"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYjNhNDYyMTQtNDYwNS00NjEzLWE3Y2ItZWJhMTc0ODc3MTAyIiwiZXhwIjoxNzYxMjEwNDUxLCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.2YpTJXglp5wkEai7iIIHsI5TY_ignGKtQ2MbWLvjLjY"
 
 # 解码payload（不需要密钥）
 payload = jwt.decode(token, options={"verify_signature": False})
