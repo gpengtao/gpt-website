@@ -2,9 +2,11 @@
 使用 browser_cookie3 读取 Chrome 浏览器的 cookie
 """
 
+import json
 from urllib.parse import urlparse
 
 import browser_cookie3
+import requests
 
 
 def do_get_chrome_cookies(domain):
@@ -80,7 +82,7 @@ def get_cookies_for_url(url):
 
 if __name__ == "__main__":
     # 目标网站
-    target_url = "https://www.baidu.com/"
+    target_url = "xxxx.com"
 
     print("=" * 50)
     print("Chrome Cookie 读取工具")
@@ -94,11 +96,22 @@ if __name__ == "__main__":
     print()
 
     cookies = get_cookies_for_url(target_url)
-
     print(f"\n总共找到 {len(cookies)} 个 cookie")
 
-    # 如果需要将 cookie 转换为字典格式（用于 requests 等库）
-    if cookies:
-        cookie_dict = {cookie['name']: cookie['value'] for cookie in cookies}
-        print("\nCookie 字典格式:")
-        print(cookie_dict)
+    # 过滤出 domain
+    filter_domain = target_url
+    filtered_cookies = [cookie for cookie in cookies if filter_domain in cookie['domain']]
+
+    print(f"过滤后（domain={filter_domain}）找到 {len(filtered_cookies)} 个 cookie")
+    print("获取到的cookie如下:\n")
+    print(json.dumps(filtered_cookies, ensure_ascii=False))
+
+    # 将 cookie 列表转换为 requests 可用的字典格式
+    cookies_dict = {cookie['name']: cookie['value'] for cookie in filtered_cookies}
+    # 使用 requests 发送请求
+    response = requests.get(
+        "xxxx.com",
+        cookies=cookies_dict
+    )
+    print(f"\n请求状态码: {response.status_code}")
+    print(f"响应内容: {response.text}")
