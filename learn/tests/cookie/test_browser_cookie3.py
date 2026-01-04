@@ -3,7 +3,6 @@
 """
 
 import json
-from urllib.parse import urlparse
 
 import browser_cookie3
 import requests
@@ -57,31 +56,24 @@ def do_get_chrome_cookies(domain):
         return []
 
 
-def get_cookies_for_url(url):
+def get_cookies_for_domain(domain):
     """
-    从 Chrome 浏览器读取指定 URL 的 cookie
+    从 Chrome 浏览器读取指定 domain 的 cookie
     
     Args:
-        url: 目标 URL，例如 'https://www.baidu.com/'
+        domain: 目标 URL，例如 'baidu.com'
     
     Returns:
         list: cookie 列表
     """
-    parsed_url = urlparse(url)
-    domain = parsed_url.netloc
-
-    # 移除端口号（如果有）
-    if ':' in domain:
-        domain = domain.split(':')[0]
-
     print(f"正在读取域名 {domain} 的 cookie...")
     print("=" * 50)
 
     cookies = do_get_chrome_cookies(domain)
     print(f"总共找到 {len(cookies)} 个 cookie")
 
-    filtered_cookies = [cookie for cookie in cookies if filter_domain in cookie['domain']]
-    print(f"过滤后（domain={filter_domain}）找到 {len(filtered_cookies)} 个 cookie")
+    filtered_cookies = [cookie for cookie in cookies if domain in cookie['domain']]
+    print(f"过滤后（domain={domain}）找到 {len(filtered_cookies)} 个 cookie")
     print("获取到的cookie如下:\n")
     print(json.dumps(filtered_cookies, ensure_ascii=False))
 
@@ -90,19 +82,15 @@ def get_cookies_for_url(url):
 
 if __name__ == "__main__":
     # 目标网站
-    target_url = "xxxx.com"
+    target_url = "xxxx"
 
-    cookies = get_cookies_for_url(target_url)
-
-    # 过滤出 domain
-    filter_domain = target_url
-    filtered_cookies = [cookie for cookie in cookies if filter_domain in cookie['domain']]
+    cookies = get_cookies_for_domain(target_url)
 
     # 将 cookie 列表转换为 requests 可用的字典格式
-    cookies_dict = {cookie['name']: cookie['value'] for cookie in filtered_cookies}
+    cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies}
     # 使用 requests 发送请求
     response = requests.get(
-        "xxxx.com",
+        "xxx",
         cookies=cookies_dict
     )
     print(f"\n请求状态码: {response.status_code}")
