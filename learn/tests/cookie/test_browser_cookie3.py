@@ -77,34 +77,26 @@ def get_cookies_for_url(url):
     print(f"正在读取域名 {domain} 的 cookie...")
     print("=" * 50)
 
-    return do_get_chrome_cookies(domain)
+    cookies = do_get_chrome_cookies(domain)
+    print(f"总共找到 {len(cookies)} 个 cookie")
+
+    filtered_cookies = [cookie for cookie in cookies if filter_domain in cookie['domain']]
+    print(f"过滤后（domain={filter_domain}）找到 {len(filtered_cookies)} 个 cookie")
+    print("获取到的cookie如下:\n")
+    print(json.dumps(filtered_cookies, ensure_ascii=False))
+
+    return filtered_cookies
 
 
 if __name__ == "__main__":
     # 目标网站
     target_url = "xxxx.com"
 
-    print("=" * 50)
-    print("Chrome Cookie 读取工具")
-    print("=" * 50)
-    print(f"目标网站: {target_url}")
-    print("\n注意事项：")
-    print("- 系统可能会要求输入 Mac 登录密码（这是正常的）")
-    print("- 建议先关闭 Chrome 浏览器再运行此脚本")
-    print("- 确保已在 Chrome 中访问过目标网站")
-    print("=" * 50)
-    print()
-
     cookies = get_cookies_for_url(target_url)
-    print(f"\n总共找到 {len(cookies)} 个 cookie")
 
     # 过滤出 domain
     filter_domain = target_url
     filtered_cookies = [cookie for cookie in cookies if filter_domain in cookie['domain']]
-
-    print(f"过滤后（domain={filter_domain}）找到 {len(filtered_cookies)} 个 cookie")
-    print("获取到的cookie如下:\n")
-    print(json.dumps(filtered_cookies, ensure_ascii=False))
 
     # 将 cookie 列表转换为 requests 可用的字典格式
     cookies_dict = {cookie['name']: cookie['value'] for cookie in filtered_cookies}
